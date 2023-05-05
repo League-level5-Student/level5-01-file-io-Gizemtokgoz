@@ -1,10 +1,18 @@
 package _03_To_Do_List;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class ToDoList {
+public class ToDoList implements ActionListener {
 	/*
 	 * Create a program with five buttons, add task, view tasks, remove task, save list, and load list. 
 	 *
@@ -25,14 +33,25 @@ public class ToDoList {
 	 * 
 	 * When the program starts, it should automatically load the last saved file into the list. 
 	 */
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		JPanel panel = new JPanel();
-		JButton addButton = new JButton();
-		JButton viewButton = new JButton();
-		JButton removeButton = new JButton();
-		JButton saveButton = new JButton();
-		JButton loadButton = new JButton();
+	JFrame frame = new JFrame();
+	JPanel panel = new JPanel();
+	JButton addButton = new JButton();
+	JButton viewButton = new JButton();
+	JButton removeButton = new JButton();
+	JButton saveButton = new JButton();
+	JButton loadButton = new JButton();
+	
+	ArrayList<String> tasks = new ArrayList<String>();
+	
+	FileWriter fw;
+	
+	public void main(String[] args) {
+		try {
+			fw = new FileWriter("src/ToDoList");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		frame.add(panel);
 		panel.add(addButton);
@@ -49,10 +68,40 @@ public class ToDoList {
 		saveButton.setText("Save List");
 		loadButton.setText("Load List");
 		
-		addButton.addActionListener(null);
-		viewButton.addActionListener(null);
-		removeButton.addActionListener(null);
-		saveButton.addActionListener(null);
-		loadButton.addActionListener(null);
+		addButton.addActionListener(this);
+		viewButton.addActionListener(this);
+		removeButton.addActionListener(this);
+		saveButton.addActionListener(this);
+		loadButton.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		if (arg0.getSource() == addButton) {
+			String addWhat = JOptionPane.showInputDialog("Whats task would you like to add?");
+			tasks.add(addWhat);
+		}	if (arg0.getSource() == viewButton) {
+			JOptionPane.showMessageDialog(null, "Whats task would you like to add?");
+		}	if (arg0.getSource() == removeButton) {
+			String removeWhat = JOptionPane.showInputDialog("Whats task would you like to remove?");
+			for (int i = 0; i < tasks.size(); i++) {
+				if (removeWhat == tasks.get(i)) {
+					tasks.remove(i);
+				}	
+			}
+				
+		}	if (arg0.getSource() == saveButton) {
+			for (int i = 0; i < tasks.size(); i++) {
+				try {
+					fw.write(tasks.get(i));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}	if (arg0.getSource() == loadButton) {
+			
+		}
 	}
 }
