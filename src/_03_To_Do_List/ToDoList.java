@@ -43,9 +43,13 @@ public class ToDoList implements ActionListener {
 	
 	ArrayList<String> tasks = new ArrayList<String>();
 	
-	FileWriter fw;
+	static FileWriter fw;
 	
-	public void main(String[] args) {
+	public static void main(String[] args) {	
+		new ToDoList().run();
+	}
+	
+	public void run() {
 		try {
 			fw = new FileWriter("src/ToDoList");
 		} catch (IOException e) {
@@ -81,9 +85,11 @@ public class ToDoList implements ActionListener {
 		if (arg0.getSource() == addButton) {
 			String addWhat = JOptionPane.showInputDialog("Whats task would you like to add?");
 			tasks.add(addWhat);
-		}	if (arg0.getSource() == viewButton) {
-			JOptionPane.showMessageDialog(null, "Whats task would you like to add?");
-		}	if (arg0.getSource() == removeButton) {
+		}	
+		if (arg0.getSource() == viewButton) {
+			JOptionPane.showMessageDialog(null, tasks);
+		}	
+		if (arg0.getSource() == removeButton) {
 			String removeWhat = JOptionPane.showInputDialog("Whats task would you like to remove?");
 			for (int i = 0; i < tasks.size(); i++) {
 				if (removeWhat == tasks.get(i)) {
@@ -91,7 +97,8 @@ public class ToDoList implements ActionListener {
 				}	
 			}
 				
-		}	if (arg0.getSource() == saveButton) {
+		}	
+		if (arg0.getSource() == saveButton) {
 			for (int i = 0; i < tasks.size(); i++) {
 				try {
 					fw.write(tasks.get(i));
@@ -100,8 +107,9 @@ public class ToDoList implements ActionListener {
 					e.printStackTrace();
 				}
 			}
-		}	if (arg0.getSource() == loadButton) {
-			
+		}	
+		if (arg0.getSource() == loadButton) {
+			tasks.add(fw.toString());
 		}
 	}
 }
