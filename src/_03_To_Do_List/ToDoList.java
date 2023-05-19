@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -49,14 +50,7 @@ public class ToDoList implements ActionListener {
 		new ToDoList().run();
 	}
 	
-	public void run() {
-		try {
-			fw = new FileWriter("src/ToDoList");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public void run() {		
 		frame.add(panel);
 		panel.add(addButton);
 		panel.add(viewButton);	
@@ -77,6 +71,8 @@ public class ToDoList implements ActionListener {
 		removeButton.addActionListener(this);
 		saveButton.addActionListener(this);
 		loadButton.addActionListener(this);
+		
+		frame.pack();
 	}
 
 	@Override
@@ -92,7 +88,7 @@ public class ToDoList implements ActionListener {
 		if (arg0.getSource() == removeButton) {
 			String removeWhat = JOptionPane.showInputDialog("Whats task would you like to remove?");
 			for (int i = 0; i < tasks.size(); i++) {
-				if (removeWhat == tasks.get(i)) {
+				if (removeWhat.equals(tasks.get(i))) {
 					tasks.remove(i);
 				}	
 			}
@@ -101,7 +97,9 @@ public class ToDoList implements ActionListener {
 		if (arg0.getSource() == saveButton) {
 			for (int i = 0; i < tasks.size(); i++) {
 				try {
+					fw = new FileWriter("src/ToDoList.txt");
 					fw.write(tasks.get(i));
+					fw.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -109,7 +107,14 @@ public class ToDoList implements ActionListener {
 			}
 		}	
 		if (arg0.getSource() == loadButton) {
-			tasks.add(fw.toString());
+			JFileChooser jfc = new JFileChooser();
+			int returnVal = jfc.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				String fileName = jfc.getSelectedFile().getAbsolutePath();
+				for (int i = 0; i < fileName.length(); i++) {
+					tasks.add(fileName.get(i));
+				}
+			}
 		}
 	}
 }
