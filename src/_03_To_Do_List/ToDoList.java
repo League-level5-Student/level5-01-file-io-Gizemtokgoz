@@ -112,7 +112,10 @@ public class ToDoList implements ActionListener {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				String fileName = jfc.getSelectedFile().getAbsolutePath();
 				for (int i = 0; i < fileName.length(); i++) {
-					tasks.add(fileName.get(i));
+					if(fileName.get(i) == returnVal) {
+						tasks.add(fileName.get(i));
+					}
+					
 				}
 			}
 		}
