@@ -2,6 +2,7 @@ package _03_To_Do_List;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -108,16 +109,17 @@ public class ToDoList implements ActionListener {
 		}	
 		if (arg0.getSource() == loadButton) {
 			JFileChooser jfc = new JFileChooser();
+			jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 			int returnVal = jfc.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				String fileName = jfc.getSelectedFile().getAbsolutePath();
-				for (int i = 0; i < fileName.length(); i++) {
-					if(fileName == returnVal) {
-						tasks.add(fileName);
+				File directory = jfc.getSelectedFile();
+				File[] files = directory.listFiles();
+				if(files != null) {
+					for(File f : files) {
+					  System.out.println(f.getAbsolutePath());
 					}
-					
 				}
-			}
+			}		
 		}
 	}
 }
